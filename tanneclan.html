@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanneclan – HugoSMP</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Exo+2:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --g1: #060f06; --g3: #14421a; --g4: #1a5c22;
+  --g5: #217a2c; --g6: #2da83c; --g7: #3fd155;
+  --g8: #7ee88f; --g9: #c2f5c8;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Exo 2', sans-serif; font-weight: 700;
+  background: var(--g1); color: var(--g9); overflow-x: hidden;
+}
+.snow-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 85%, rgba(20,66,26,0.4) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 70% at 85% 15%, rgba(29,92,34,0.25) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+/* HERO */
+.hero {
+  position: relative; z-index: 1; min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 2rem;
+}
+.hero-badge {
+  font-weight: 900; font-size: 0.78rem; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--g7); border: 1px solid rgba(63,209,85,0.35);
+  padding: 0.4rem 1.4rem; border-radius: 999px;
+  margin-bottom: 1.5rem; animation: fadeUp 0.9s ease both 0.1s;
+}
+.hero-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4rem, 14vw, 11rem); line-height: 0.92; letter-spacing: 4px;
+  background: linear-gradient(160deg, #ffffff 0%, var(--g8) 45%, var(--g6) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 0 50px rgba(63,209,85,0.45));
+  animation: fadeUp 0.9s ease both 0.25s;
+}
+.hero-sub {
+  font-size: clamp(0.85rem, 2vw, 1.1rem); font-weight: 900;
+  letter-spacing: 6px; text-transform: uppercase;
+  color: var(--g8); opacity: 0.65; margin: 1rem 0 2.5rem;
+  animation: fadeUp 0.9s ease both 0.4s;
+}
+.hero-btns {
+  display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+  animation: fadeUp 0.9s ease both 0.55s;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* BUTTONS */
+.btn {
+  padding: 0.8rem 2.2rem; border-radius: 8px;
+  font-family: 'Exo 2', sans-serif; font-size: 0.9rem; font-weight: 900;
+  letter-spacing: 2px; text-transform: uppercase; cursor: pointer;
+  text-decoration: none; transition: transform 0.2s, box-shadow 0.3s; display: inline-block;
+}
+.btn-green {
+  background: linear-gradient(135deg, var(--g4), var(--g7));
+  color: #fff; border: none;
+  box-shadow: 0 0 25px rgba(63,209,85,0.3), 0 4px 16px rgba(0,0,0,0.5);
+}
+.btn-green:hover { transform: translateY(-3px); box-shadow: 0 0 45px rgba(63,209,85,0.5); }
+.btn-ghost {
+  background: transparent; color: var(--g8); border: 2px solid rgba(126,232,143,0.4);
+}
+.btn-ghost:hover { transform: translateY(-3px); background: rgba(126,232,143,0.08); border-color: var(--g8); }
+
+/* LAYOUT */
+.glow-line {
+  position: relative; z-index: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(63,209,85,0.4), transparent);
+}
+section {
+  position: relative; z-index: 1;
+  padding: 4.5rem 2rem; max-width: 1100px; margin: 0 auto;
+}
+.sec-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: 3px; color: var(--g8); margin-bottom: 2rem;
+}
+
+/* ABOUT */
+.about-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+  margin-bottom: 3rem; max-width: 720px;
+}
+.about-card {
+  background: rgba(20,66,26,0.35); border: 1px solid rgba(63,209,85,0.18);
+  border-radius: 12px; padding: 1.75rem 1.25rem; text-align: center;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.about-card:hover { transform: translateY(-5px); border-color: rgba(63,209,85,0.45); }
+.about-icon { font-size: 2rem; margin-bottom: 0.65rem; }
+.about-text { font-size: 0.95rem; font-weight: 900; color: var(--g8); letter-spacing: 1px; }
+
+/* WHY JOIN */
+.why-box {
+  background: rgba(14,44,16,0.5); border: 1px solid rgba(63,209,85,0.2);
+  border-radius: 16px; padding: 2.5rem 2rem; position: relative; overflow: hidden;
+}
+.why-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g6), transparent);
+}
+.why-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.6rem, 4vw, 2.5rem); letter-spacing: 3px; color: var(--g8); margin-bottom: 1.25rem;
+}
+.why-points { display: flex; flex-direction: column; gap: 0.75rem; }
+.why-point {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+}
+.why-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--g6);
+  flex-shrink: 0; margin-top: 0.35rem;
+}
+.why-text { font-size: 0.92rem; font-weight: 800; color: var(--g9); opacity: 0.8; line-height: 1.5; }
+
+/* CLANS */
+.clans-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+}
+@media (max-width: 780px) { .clans-grid { grid-template-columns: 1fr; } }
+.clan-card {
+  background: rgba(14,44,16,0.5); border: 1px solid rgba(63,209,85,0.2);
+  border-radius: 14px; padding: 2rem 1.75rem;
+  transition: transform 0.25s, box-shadow 0.25s; position: relative; overflow: hidden;
+}
+.clan-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g6), transparent);
+}
+.clan-card:hover { transform: translateY(-5px); box-shadow: 0 12px 35px rgba(33,122,44,0.3); }
+.clan-badge {
+  display: inline-block; font-size: 0.65rem; font-weight: 900;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.22rem 0.75rem; border-radius: 999px; margin-bottom: 0.75rem;
+  background: rgba(63,209,85,0.12); color: var(--g7); border: 1px solid rgba(63,209,85,0.28);
+}
+.clan-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem; letter-spacing: 3px; color: #fff; margin-bottom: 0.5rem;
+}
+.clan-desc { font-size: 0.85rem; font-weight: 700; color: var(--g8); opacity: 0.55; margin-bottom: 1.25rem; }
+.clan-reqs { display: flex; flex-direction: column; gap: 0.5rem; }
+.clan-req {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-size: 0.85rem; font-weight: 900; color: var(--g9);
+}
+.clan-req-icon { font-size: 1rem; flex-shrink: 0; }
+.clan-divider { height: 1px; background: rgba(63,209,85,0.12); margin: 1rem 0; }
+
+/* MEMBERS */
+.clan-group { margin-bottom: 2.5rem; }
+.clan-group-title {
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem;
+}
+.clan-group-title-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; letter-spacing: 3px; color: var(--g8);
+}
+.clan-group-line { flex: 1; height: 1px; background: rgba(63,209,85,0.2); }
+.clan-group.main-clan .clan-group-title-text { color: #fff; }
+.clan-group.main-clan .clan-group-line { background: rgba(63,209,85,0.45); }
+.clan-group.main-clan .members-grid .member-card {
+  border-color: rgba(63,209,85,0.3);
+  background: rgba(20,66,26,0.55);
+}
+.members-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+  margin-bottom: 0;
+}
+@media (max-width: 600px) {
+  .members-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+  .clans-grid { grid-template-columns: 1fr; }
+}
+.member-card {
+  background: rgba(14,44,16,0.45); border: 1px solid rgba(63,209,85,0.15);
+  border-radius: 14px; padding: 1.75rem 1.25rem; text-align: center;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.member-card:hover { transform: translateY(-5px); border-color: rgba(63,209,85,0.4); }
+.member-clan-tag {
+  font-size: 0.6rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--g6); opacity: 0.7; margin-bottom: 0.75rem;
+}
+.member-skin {
+  width: 64px; height: 64px; border-radius: 10px; margin: 0 auto 1rem;
+  background: rgba(20,66,26,0.6); border: 2px solid rgba(63,209,85,0.25);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.member-skin img { width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; }
+.skin-ph { font-size: 1.9rem; opacity: 0.4; }
+.member-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem; letter-spacing: 2px; color: #fff; margin-bottom: 0.4rem;
+}
+.role {
+  font-size: 0.68rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.2rem 0.75rem; border-radius: 999px; display: inline-block;
+}
+.role-leader    { background: rgba(255,215,80,0.15);  color: #ffd750; border: 1px solid rgba(255,215,80,0.35); }
+.role-co-leader { background: rgba(63,209,85,0.15);   color: var(--g7); border: 1px solid rgba(63,209,85,0.3); }
+.role-mod       { background: rgba(80,160,255,0.12);  color: #7ab8ff; border: 1px solid rgba(80,160,255,0.3); }
+.all-members-btn { text-align: center; }
+
+/* ALLIANCES */
+.alliances-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem;
+}
+@media (max-width: 600px) { .alliances-grid { grid-template-columns: 1fr; } }
+.alliance-card {
+  background: rgba(14,44,16,0.4); border: 1px solid rgba(63,209,85,0.15);
+  border-radius: 12px; padding: 1.75rem 1.5rem; text-align: center;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.alliance-card:hover { transform: translateY(-5px); border-color: rgba(63,209,85,0.4); }
+.alliance-icon { font-size: 2.2rem; margin-bottom: 0.75rem; }
+.alliance-name {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 2px; color: #fff; margin-bottom: 0.3rem;
+}
+.alliance-tag { font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; color: var(--g7); opacity: 0.65; }
+
+/* RULES */
+.rules-list { display: flex; flex-direction: column; gap: 0.9rem; max-width: 700px; }
+.rule-item {
+  display: flex; align-items: flex-start; gap: 1.25rem;
+  background: rgba(14,44,16,0.4); border: 1px solid rgba(63,209,85,0.12);
+  border-radius: 12px; padding: 1.1rem 1.4rem; transition: border-color 0.25s;
+}
+.rule-item:hover { border-color: rgba(63,209,85,0.35); }
+.rule-num {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: 1px;
+  color: var(--g5); flex-shrink: 0; min-width: 2rem; line-height: 1;
+}
+.rule-strong { font-size: 0.95rem; font-weight: 900; color: var(--g8); margin-bottom: 0.2rem; }
+.rule-span   { font-size: 0.83rem; font-weight: 700; color: var(--g9); opacity: 0.5; line-height: 1.5; }
+
+/* BOTTOM */
+.bottom-section {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 4.5rem 2rem 5rem;
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+.socials-bar {
+  background: rgba(14,44,16,0.5); border: 1px solid rgba(63,209,85,0.2);
+  border-radius: 16px; padding: 1.75rem 2rem;
+  position: relative; overflow: hidden;
+}
+.socials-bar::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g6), transparent);
+}
+.socials-bar-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px;
+  color: var(--g8); margin-bottom: 1.25rem;
+}
+.socials-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;
+}
+@media (max-width: 600px) { .socials-row { grid-template-columns: repeat(2, 1fr); } }
+.social-link {
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  background: rgba(20,66,26,0.4); border: 1px solid rgba(63,209,85,0.15);
+  border-radius: 12px; padding: 1.2rem 0.75rem;
+  text-decoration: none; transition: border-color 0.25s, background 0.25s, transform 0.2s;
+}
+.social-link:hover { border-color: rgba(63,209,85,0.45); background: rgba(20,66,26,0.65); transform: translateY(-3px); }
+.social-logo {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: rgba(63,209,85,0.12); border: 1px solid rgba(63,209,85,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; color: var(--g7); font-weight: 900; letter-spacing: 0;
+}
+.social-name { font-size: 0.85rem; font-weight: 900; color: var(--g8); letter-spacing: 1px; }
+.social-handle { font-size: 0.7rem; font-weight: 800; color: var(--g8); opacity: 0.4; }
+
+/* DISCORD BOX */
+.dc-wrap {
+  display: flex; justify-content: center;
+}
+.dc-box {
+  background: rgba(14,44,16,0.55); border: 1px solid rgba(63,209,85,0.25);
+  border-radius: 16px; padding: 1.75rem 2.5rem;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 2rem;
+  max-width: 620px; width: 100%;
+}
+.dc-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--g6), transparent);
+}
+.dc-logo {
+  flex-shrink: 0; width: 56px; height: 56px; border-radius: 14px;
+  background: rgba(63,209,85,0.12); border: 1px solid rgba(63,209,85,0.3);
+  display: flex; align-items: center; justify-content: center;
+}
+.dc-logo svg { width: 32px; height: 32px; fill: var(--g7); }
+.dc-content { flex: 1; }
+.dc-title {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 3px;
+  color: var(--g8); margin-bottom: 0.35rem;
+}
+.dc-text {
+  font-size: 0.82rem; font-weight: 800; color: var(--g9); opacity: 0.55;
+  line-height: 1.5; margin-bottom: 1rem;
+}
+@media (max-width: 500px) {
+  .dc-box { flex-direction: column; text-align: center; padding: 1.5rem; gap: 1rem; }
+}
+}
+
+footer {
+  position: relative; z-index: 1; text-align: center; padding: 2rem;
+  border-top: 1px solid rgba(63,209,85,0.08);
+  font-size: 0.78rem; font-weight: 900; color: var(--g8); opacity: 0.3; letter-spacing: 2px; text-transform: uppercase;
+}
+
+.reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+@media (max-width: 600px) { section { padding: 3rem 1.25rem; } }
+</style>
+</head>
+<body>
+
+<canvas class="snow-canvas" id="snow"></canvas>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">⚔ HugoSMP ⚔</div>
+  <h1 class="hero-title">Tanneclan</h1>
+  <p class="hero-sub">Macht im Schatten der Tannen</p>
+  <div class="hero-btns">
+    <a href="#join" class="btn btn-green">Jetzt beitreten</a>
+    <a href="#why" class="btn btn-ghost">Mehr erfahren</a>
+  </div>
+</div>
+
+<div class="glow-line"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <h2 class="sec-title reveal">Clan auf einen Blick</h2>
+  <div class="about-grid reveal" style="margin-left:auto;margin-right:auto;">
+    <div class="about-card"><div class="about-icon">😊</div><div class="about-text">Freundlich</div></div>
+    <div class="about-card"><div class="about-icon">⚔️</div><div class="about-text">Fighten</div></div>
+    <div class="about-card"><div class="about-icon">🏗️</div><div class="about-text">Bauen</div></div>
+    <div class="about-card"><div class="about-icon">🟢</div><div class="about-text">Aktiv</div></div>
+    <div class="about-card"><div class="about-icon">🤝</div><div class="about-text">Teamwork</div></div>
+    <div class="about-card"><div class="about-icon">🏆</div><div class="about-text">Erfolgreich</div></div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- WHY JOIN -->
+<section id="why">
+  <div class="why-box reveal">
+    <div class="why-title">Warum dem Tanneclan beitreten?</div>
+    <div class="why-points">
+      <div class="why-point"><div class="why-dot"></div><div class="why-text">Ein aktives, eingespieltes Team das sich gegenseitig unterstützt – egal ob beim Kämpfen, Bauen oder Farmen.</div></div>
+      <div class="why-point"><div class="why-dot"></div><div class="why-text">Drei Clans mit unterschiedlichen Anforderungen – für jeden ist der passende Platz dabei, egal ob Anfänger oder Veteran.</div></div>
+      <div class="why-point"><div class="why-dot"></div><div class="why-text">Gemeinsame Events, Raids und Projekte halten den Spielspaß dauerhaft hoch.</div></div>
+      <div class="why-point"><div class="why-dot"></div><div class="why-text">Klare Strukturen und faire Führung sorgen für eine entspannte, aber ambitionierte Atmosphäre.</div></div>
+      <div class="why-point"><div class="why-dot"></div><div class="why-text">Wer sich beweist, kann aufsteigen – Leadership-Positionen werden aus den eigenen Reihen besetzt.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- CLANS -->
+<section id="clans">
+  <h2 class="sec-title reveal">Unsere Clans</h2>
+  <div class="clans-grid reveal">
+
+    <div class="clan-card" style="border-color:rgba(63,209,85,0.5); box-shadow:0 0 30px rgba(63,209,85,0.15);">
+      <div class="clan-badge" style="background:rgba(63,209,85,0.2); border-color:rgba(63,209,85,0.5); color:#fff;">★ Hauptclan</div>
+      <div class="clan-name" style="background:linear-gradient(135deg,#fff,var(--g7));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Tanne Main</div>
+      <div class="clan-desc">Der Original-Clan · Nur für die Besten</div>
+      <div class="clan-divider"></div>
+      <div class="clan-reqs">
+        <div class="clan-req"><span class="clan-req-icon">💰</span> 25.000.000 Coins Mindestkapital</div>
+        <div class="clan-req"><span class="clan-req-icon">🎂</span> Mindestalter 16 Jahre</div>
+        <div class="clan-req"><span class="clan-req-icon">⚔️</span> Erfahrener Spieler auf HugoSMP</div>
+      </div>
+    </div>
+
+    <div class="clan-card">
+      <div class="clan-badge">Sub-Clan</div>
+      <div class="clan-name">T2nne</div>
+      <div class="clan-desc">Zweiter Arm des Clans · Für reife Spieler</div>
+      <div class="clan-divider"></div>
+      <div class="clan-reqs">
+        <div class="clan-req"><span class="clan-req-icon">💰</span> 10.000.000 Coins Mindestkapital</div>
+        <div class="clan-req"><span class="clan-req-icon">🎂</span> Mindestalter 16 Jahre</div>
+        <div class="clan-req"><span class="clan-req-icon">🧠</span> Gewisse Reife vorausgesetzt</div>
+      </div>
+    </div>
+
+    <div class="clan-card">
+      <div class="clan-badge">Sub-Clan</div>
+      <div class="clan-name">T3nne</div>
+      <div class="clan-desc">Dritter Arm des Clans · Für neue Talente</div>
+      <div class="clan-divider"></div>
+      <div class="clan-reqs">
+        <div class="clan-req"><span class="clan-req-icon">💰</span> 5.000.000 Coins Mindestkapital</div>
+        <div class="clan-req"><span class="clan-req-icon">🧠</span> Gewisse Reife vorausgesetzt</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- MEMBERS (Führungspositionen) -->
+<section id="members">
+  <h2 class="sec-title reveal">Führung</h2>
+  <!-- Tanne Main -->
+  <div class="clan-group main-clan reveal">
+    <div class="clan-group-title">
+      <div class="clan-group-line"></div>
+      <span class="clan-group-title-text">★ TANNE MAIN</span>
+      <div class="clan-group-line"></div>
+    </div>
+    <div class="members-grid">
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🌲</span></div>
+        <div class="member-name">Spieler 1</div>
+        <div class="role role-leader">Leader</div>
+      </div>
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🌿</span></div>
+        <div class="member-name">Spieler 2</div>
+        <div class="role role-co-leader">Co-Leader</div>
+      </div>
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🛡️</span></div>
+        <div class="member-name">Spieler 3</div>
+        <div class="role role-mod">Moderator</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T2nne -->
+  <div class="clan-group reveal">
+    <div class="clan-group-title">
+      <div class="clan-group-line"></div>
+      <span class="clan-group-title-text">T2NNE</span>
+      <div class="clan-group-line"></div>
+    </div>
+    <div class="members-grid">
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🌲</span></div>
+        <div class="member-name">Spieler 4</div>
+        <div class="role role-leader">Leader</div>
+      </div>
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🌿</span></div>
+        <div class="member-name">Spieler 5</div>
+        <div class="role role-co-leader">Co-Leader</div>
+      </div>
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🛡️</span></div>
+        <div class="member-name">Spieler 6</div>
+        <div class="role role-mod">Moderator</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- T3nne -->
+  <div class="clan-group reveal">
+    <div class="clan-group-title">
+      <div class="clan-group-line"></div>
+      <span class="clan-group-title-text">T3NNE</span>
+      <div class="clan-group-line"></div>
+    </div>
+    <div class="members-grid">
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🌲</span></div>
+        <div class="member-name">Spieler 7</div>
+        <div class="role role-leader">Leader</div>
+      </div>
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🌿</span></div>
+        <div class="member-name">Spieler 8</div>
+        <div class="role role-co-leader">Co-Leader</div>
+      </div>
+      <div class="member-card">
+        <div class="member-skin"><span class="skin-ph">🛡️</span></div>
+        <div class="member-name">Spieler 9</div>
+        <div class="role role-mod">Moderator</div>
+      </div>
+    </div>
+  </div>
+  <div class="all-members-btn reveal">
+    <a href="members.html" class="btn btn-ghost">Alle Mitglieder anzeigen</a>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- ALLIANCES -->
+<section id="alliances">
+  <h2 class="sec-title reveal">Unsere Bündnisse</h2>
+  <div class="alliances-grid reveal">
+    <div class="alliance-card">
+      <div class="alliance-icon">🤝</div>
+      <div class="alliance-name">Bündnis 1</div>
+      <div class="alliance-tag">Verbündeter Clan</div>
+    </div>
+    <div class="alliance-card">
+      <div class="alliance-icon">🤝</div>
+      <div class="alliance-name">Bündnis 2</div>
+      <div class="alliance-tag">Verbündeter Clan</div>
+    </div>
+    <div class="alliance-card">
+      <div class="alliance-icon">🤝</div>
+      <div class="alliance-name">Bündnis 3</div>
+      <div class="alliance-tag">Verbündeter Clan</div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- RULES -->
+<section id="rules">
+  <h2 class="sec-title reveal">Clan-Regeln</h2>
+  <div class="rules-list reveal">
+    <div class="rule-item">
+      <span class="rule-num">01</span>
+      <div><div class="rule-strong">Respekt</div><div class="rule-span">Kein Griefing, kein Stehlen – weder bei Mitgliedern noch Verbündeten.</div></div>
+    </div>
+    <div class="rule-item">
+      <span class="rule-num">02</span>
+      <div><div class="rule-strong">Aktivität</div><div class="rule-span">Mindestens einmal pro Woche online oder kurz Bescheid geben.</div></div>
+    </div>
+    <div class="rule-item">
+      <span class="rule-num">03</span>
+      <div><div class="rule-strong">Teamgeist</div><div class="rule-span">Wir helfen uns gegenseitig – Ressourcen werden fair geteilt.</div></div>
+    </div>
+    <div class="rule-item">
+      <span class="rule-num">04</span>
+      <div><div class="rule-strong">Kein Cheating</div><div class="rule-span">Hacks, Mods mit Vorteil und Exploits sind verboten.</div></div>
+    </div>
+    <div class="rule-item">
+      <span class="rule-num">05</span>
+      <div><div class="rule-strong">Loyalität</div><div class="rule-span">Entscheidungen des Leaders und Co-Leaders werden respektiert.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-line"></div>
+
+<!-- SOCIALS + DISCORD -->
+<div class="bottom-section" id="join">
+
+  <!-- Socials Bar -->
+  <div class="socials-bar reveal">
+    <div class="socials-bar-title">Socials</div>
+    <div class="socials-row">
+      <a href="#" class="social-link">
+        <div class="social-logo" id="logo-tt">TT</div>
+        <span class="social-name">TikTok</span>
+        <span class="social-handle">@tanneclan</span>
+      </a>
+      <a href="#" class="social-link">
+        <div class="social-logo" id="logo-yt">YT</div>
+        <span class="social-name">YouTube</span>
+        <span class="social-handle">Tanneclan</span>
+      </a>
+      <a href="#" class="social-link">
+        <div class="social-logo" id="logo-ig">IG</div>
+        <span class="social-name">Instagram</span>
+        <span class="social-handle">@tanneclan</span>
+      </a>
+      <a href="#" class="social-link">
+        <div class="social-logo" id="logo-tw">TV</div>
+        <span class="social-name">Twitch</span>
+        <span class="social-handle">tanneclan</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Discord Box (centered) -->
+  <div class="dc-wrap reveal">
+    <div class="dc-box">
+      <div class="dc-logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/>
+        </svg>
+      </div>
+      <div class="dc-content">
+        <div class="dc-title">Discord</div>
+        <div class="dc-text">Tritt unserem Discord bei – alle Bewerbungen, Events und Ankündigungen laufen hier ab.</div>
+        <a href="#" class="btn btn-green" style="display:inline-block; padding:0.65rem 1.75rem; font-size:0.82rem;">Server beitreten</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>© 2026 Tanneclan · HugoSMP · Copyright Pfoersich</footer>
+
+<script>
+const canvas = document.getElementById('snow');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+const flakes = Array.from({length: 130}, () => ({
+  x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+  r: 1 + Math.random() * 2.5, sx: (Math.random() - 0.5) * 0.45,
+  sy: 0.35 + Math.random() * 0.75, o: 0.15 + Math.random() * 0.5
+}));
+function draw() {
+  ctx.clearRect(0, 0, W, H); ctx.fillStyle = '#fff';
+  for (const f of flakes) {
+    ctx.globalAlpha = f.o;
+    ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.fill();
+    f.x += f.sx; f.y += f.sy;
+    if (f.y > H) { f.y = -5; f.x = Math.random() * W; }
+    if (f.x > W) f.x = 0; if (f.x < 0) f.x = W;
+  }
+  ctx.globalAlpha = 1; requestAnimationFrame(draw);
+}
+draw();
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
