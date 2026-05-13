@@ -6,14 +6,13 @@
 
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #121212;
+      font-family: Arial;
+      background: #111;
       color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
 
     .box {
@@ -22,84 +21,71 @@
       border-radius: 12px;
       width: 300px;
       text-align: center;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
     input {
       width: 100%;
       padding: 10px;
       margin-top: 10px;
-      border: none;
-      border-radius: 6px;
-      outline: none;
     }
 
     button {
-      margin-top: 15px;
       width: 100%;
       padding: 10px;
-      border: none;
-      border-radius: 6px;
-      background: #4caf50;
+      margin-top: 10px;
+      background: green;
       color: white;
+      border: none;
       cursor: pointer;
-      font-weight: bold;
-    }
-
-    button:hover {
-      background: #45a049;
     }
 
     #result {
       margin-top: 15px;
-      font-size: 14px;
-      color: #ccc;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="box">
-    <h2>Minecraft Login</h2>
+<div class="box">
+  <h2>Minecraft Login</h2>
 
-    <input id="mcName" placeholder="Minecraft Name">
+  <input id="mcName" placeholder="Minecraft Name">
 
-    <button onclick="login()">Code generieren</button>
+  <button onclick="login()">Code generieren</button>
 
-    <p id="result"></p>
-  </div>
+  <p id="result"></p>
+</div>
 
-  <script>
-    async function login() {
-      const name = document.getElementById("mcName").value;
+<script>
+async function login() {
+  const name = document.getElementById("mcName").value;
 
-      if (!name) {
-        document.getElementById("result").innerText = "Bitte Namen eingeben";
-        return;
-      }
+  if (!name) {
+    document.getElementById("result").innerText = "Name fehlt";
+    return;
+  }
 
-      try {
-        const res = await fetch("https://mc-link-backend-production.up.railway.app/create-code", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ name })
-        });
+  try {
+    const res = await fetch("https://mc-link-backend-production.up.railway.app/create-code", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name })
+    });
 
-        const data = await res.json();
+    const data = await res.json();
 
-        document.getElementById("result").innerText =
-          "Dein Code: " + data.code;
+    document.getElementById("result").innerText =
+      "Dein Code: " + data.code;
 
-      } catch (err) {
-        console.log(err);
-        document.getElementById("result").innerText =
-          "Server nicht erreichbar";
-      }
-    }
-  </script>
+  } catch (err) {
+    document.getElementById("result").innerText =
+      "Server nicht erreichbar";
+  }
+}
+</script>
 
 </body>
 </html>
