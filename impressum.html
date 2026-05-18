@@ -17,8 +17,6 @@
 
 :root {
   --g1: #060f06;
-  --g4: #1a5c22;
-  --g6: #2da83c;
   --g7: #3fd155;
   --g8: #7ee88f;
 }
@@ -79,50 +77,28 @@ canvas {
   box-shadow: 0 0 25px rgba(63,209,85,0.2);
 }
 
-/* CENTER */
+/* CONTENT */
 .wrapper {
   position: relative;
   z-index: 2;
 
-  min-height: 100vh;
+  max-width: 900px;
+  margin: 0 auto;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-  padding: 2rem;
+  padding: 80px 30px;
 }
 
-/* TEXT */
-.content {
-  max-width: 700px;
-}
-
-.badge {
-  display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: var(--g7);
-
-  border: 1px solid rgba(63,209,85,0.35);
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
-
-  margin-bottom: 1.5rem;
-}
-
+/* HEADER */
 .title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 5rem;
+  font-size: 4.5rem;
   letter-spacing: 4px;
 
-  background: linear-gradient(160deg,#fff,var(--g8),var(--g6));
+  background: linear-gradient(160deg,#fff,var(--g8));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
 }
 
 .sub {
@@ -131,35 +107,31 @@ canvas {
   letter-spacing: 4px;
   color: var(--g8);
   opacity: 0.6;
-
-  margin-bottom: 3rem;
+  margin-bottom: 40px;
 }
 
-.info {
-  line-height: 2;
+/* TEXT */
+.section {
+  margin-bottom: 30px;
 }
 
-.info p {
+.section h2 {
   font-size: 1rem;
-  color: rgba(255,255,255,0.88);
-}
-
-.highlight {
+  letter-spacing: 2px;
   color: var(--g8);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.section p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.85);
+}
+
+.label {
   font-weight: 900;
-}
-
-.space {
-  margin-top: 2rem;
-}
-
-/* MOBILE */
-@media(max-width:700px){
-
-  .title {
-    font-size: 3.5rem;
-  }
-
+  color: var(--g7);
 }
 </style>
 </head>
@@ -172,38 +144,25 @@ canvas {
 
 <div class="wrapper">
 
-  <div class="content">
+  <div class="title">IMPRESSUM</div>
+  <div class="sub">Angaben gemäß § 5 TMG</div>
 
-    <div class="badge">Hugo SMP</div>
+  <div class="section">
+    <h2>Angaben zum Betreiber</h2>
+    <p><span class="label">Benutzername:</span> Pfirsichbaum28</p>
+  </div>
 
-    <div class="title">IMPRESSUM</div>
+  <div class="section">
+    <h2>Kontakt</h2>
+    <p><span class="label">E-Mail:</span> Tanne.bewerbungen@gmail.com</p>
+  </div>
 
-    <div class="sub">Minecraft Community Information</div>
-
-    <div class="info">
-
-      <p>
-        <span class="highlight">Benutzername:</span>
-        Pfirsichbaum28
-      </p>
-
-      <p>
-        <span class="highlight">E-Mail:</span>
-        Tanne.bewerbungen@gmail.com
-      </p>
-
-      <div class="space"></div>
-
-      <p>
-        Diese Website steht in keiner Verbindung zu Mojang Studios oder Microsoft.
-      </p>
-
-      <p>
-        Minecraft ist eine Marke von Mojang Studios.
-      </p>
-
-    </div>
-
+  <div class="section">
+    <h2>Haftungsausschluss</h2>
+    <p>
+      Diese Website steht in keiner Verbindung zu Mojang Studios oder Microsoft.
+      Minecraft ist eine Marke von Mojang Studios.
+    </p>
   </div>
 
 </div>
@@ -237,10 +196,8 @@ function draw() {
 
   for (const f of flakes) {
     ctx.globalAlpha = f.o;
-
     ctx.beginPath();
     ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-
     ctx.fillStyle = "#fff";
     ctx.fill();
 
